@@ -1,11 +1,22 @@
 package test;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/itline")
 public class ItLineController {
-    @RequestMapping("/itline")
-    public String index() {
+
+    private final ItemService itemService;
+
+    public ItLineController(ItemService itemService) {
+        this.itemService = itemService;
+    }
+
+    @GetMapping
+    public String getItems(Model model) {
+        model.addAttribute("items", itemService.getAllItems());
         return "index";
     }
 }
