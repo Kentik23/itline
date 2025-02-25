@@ -1,0 +1,15 @@
+<div th:fragment="delItemModal">
+    <div class="modal fade" id="delItemModal" tabindex="-1" aria-labelledby="delItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delItemModalLabel">Удалить элемент?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="modalDeleteButton" data-bs-dismiss="modal" data-bs-target="#delItemModal">Удалить</button>
+                    <button type="button" class="btn btn-secondary ms-auto" data-bs-dismiss="modal" data-bs-target="#delItemModal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -27,9 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Удаление элемента
-    deleteButton.addEventListener("click", function () {
+    document.getElementById("modalDeleteButton").addEventListener("click", function () {
         const itemId = selectedRow.querySelector("input[type='checkbox']").dataset.id; // Получаем id элемента
-        if (!confirm("Вы уверены, что хотите удалить этот элемент?")) return;
 
         fetch(`/itline/${itemId}`, {
             method: "DELETE",
@@ -77,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
+
 
     // Сброс модального окна его закрытии
     let modalElement = document.getElementById("addItemModal");

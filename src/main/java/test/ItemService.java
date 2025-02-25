@@ -21,13 +21,13 @@ public class ItemService {
     }
 
     public void updateStatus(Long id, boolean isActive) {
-        Item item = repository.findById(id).orElseThrow(() -> new RuntimeException("Элемент не найден"));
+        Item item = repository.findById(id).get();
         item.setActive(isActive);
         repository.save(item);
     }
 
     public void detete(Long id) {
-        repository.findById(id).orElseThrow(() -> new RuntimeException("Элемент не найден"));
+        repository.findById(id).get();
         repository.deleteById(id);;
     }
 }

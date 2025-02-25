@@ -11,9 +11,9 @@
                             <input type="checkbox" class="form-check-input" id="activeCheckbox">
                             <label class="form-check-label" for="activeCheckbox">Активно</label>
                         </div>
-                        <label class="form-label">Выберите иконку</label>
-                        <div class="dropdown">
-                            <button class="btn btn-light dropdown-toggle p-1 d-flex align-items-center" type="button" id="iconDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <label class="form-label">Иконка</label>
+                        <div class="dropdown mb-3">
+                            <button class="btn btn-light dropdown-toggle p-1" type="button" id="iconDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img id="iconSelect" src="images/item1.icon" width="32" height="32" alt="Иконка">
                             </button>
                             <ul class="dropdown-menu p-1" aria-labelledby="iconDropdownButton" style="min-width: auto;">
@@ -32,9 +32,9 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#addItemModal">Отмена</button>
+                <div class="modal-footer d-flex">
                     <button type="button" class="btn btn-primary" id="saveButton">Создать</button>
+                    <button type="button" class="btn btn-secondary ms-auto" data-bs-dismiss="modal" data-bs-target="#addItemModal">Отмена</button>
                 </div>
             </div>
         </div>

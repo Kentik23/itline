@@ -32,7 +32,7 @@ public class ItLineController {
     @PostMapping()
     @ResponseBody
     public Item addItem(@RequestBody Item item) {
-        return itemService.save(item); // Сохраняем в БД, возвращаем объект для обновления таблицы
+        return itemService.save(item);
     }
 
     @PatchMapping("{id}")
@@ -46,6 +46,5 @@ public class ItLineController {
     public ResponseEntity<?> deleteItem(@PathVariable Long id) {
         itemService.detete(id);
         return ResponseEntity.ok(Map.of("success", true));
-        
     }
 }
