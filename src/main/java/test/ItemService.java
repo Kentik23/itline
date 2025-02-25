@@ -25,4 +25,9 @@ public class ItemService {
         item.setActive(isActive);
         repository.save(item);
     }
+
+    public void detete(Long id) {
+        repository.findById(id).orElseThrow(() -> new RuntimeException("Элемент не найден"));
+        repository.deleteById(id);;
+    }
 }
