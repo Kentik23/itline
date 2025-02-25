@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ItLine</title>
+    <title>itline</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/main.js"></script>
 </head>
 <body>
     <div class="container mt-4">
         <div class="d-flex">
-            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addItemModal">
-                Добавить
-              </button>
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addItemModal">Добавить</button>
             <button id="deleteButton" class="btn btn-danger btn-lg ms-auto" disabled>Удалить</button>
         </div>
         <table class="table mt-3">
@@ -24,7 +23,7 @@
                 </tr>
             </thead>
             <tbody id="dataTable">
-                <tr th:each="item : ${items}" th:data-id="${item.id}" class="selectable-row">
+                <tr th:each="item : ${items}" class="selectable-row">
                     <td>
                         <input type="checkbox" 
                                class="form-check-input toggle-status" 
@@ -38,215 +37,7 @@
             </tbody>
         </table>
     </div>
-    <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="addItemModalLabel">Добавить элемент</h5>
-            </div>
-            <div class="modal-body">
-              <form id="addItemForm">
-                <!-- Чекбокс -->
-                <div class="mb-3 form-check">
-                  <input type="checkbox" class="form-check-input" id="activeCheckbox">
-                  <label class="form-check-label" for="activeCheckbox">Активно</label>
-                </div>
-      
-                <!-- Выпадающий список с иконками -->
-                <label class="form-label">Выберите иконку</label>
-                <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle p-1 d-flex align-items-center" type="button" id="iconDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img id="iconSelect" src="images/item1.icon" width="32" height="32" alt="Иконка">
-                    </button>
-                    <ul class="dropdown-menu p-1" aria-labelledby="iconDropdownButton" style="min-width: auto;">
-                        <li>
-                            <a class="dropdown-item p-1" href="#" onclick="selectIcon('images/item1.icon')">
-                                <img src="images/item1.icon" width="32" height="32" alt="Иконка 1">
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item p-1" href="#" onclick="selectIcon('images/item2.icon')">
-                                <img src="images/item2.icon" width="32" height="32" alt="Иконка 2">
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item p-1" href="#" onclick="selectIcon('images/item3.icon')">
-                                <img src="images/item3.icon" width="32" height="32" alt="Иконка 3">
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-      
-                <!-- Поле "Название" -->
-                <div class="mb-3">
-                  <label for="nameInput" class="form-label">Название</label>
-                  <input type="text" class="form-control" id="nameInput" required>
-                </div>
-      
-                <!-- Поле "Описание" -->
-                <div class="mb-3">
-                  <label for="descriptionInput" class="form-label">Описание</label>
-                  <textarea class="form-control" id="descriptionInput" required></textarea>
-                </div>
-              </form>
-            </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#addItemModal">Отмена</button>
-                <button type="button" class="btn btn-primary" id="saveButton">Создать</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="~{fragments/modal :: addItemModal}"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const table = document.getElementById("dataTable");
-            const deleteButton = document.getElementById("deleteButton");
-            let selectedRow = null;
-
-            // Выбор строки при клике
-            table.addEventListener("click", function (event) {
-                if (!event.target.classList.contains("toggle-status")) {
-                    let row = event.target.closest("tr"); // Находим родительскую строку
-
-                    if (!row) return; // Пропускаем, если нет ID (например, клик по заголовку)
-
-                    // Снимаем выделение со всех строк
-                    document.querySelectorAll(".selectable-row").forEach(r => r.classList.remove("table-active"));
-                    
-
-                    // Если кликнули по той же строке, снимаем выделение
-                    if (row === selectedRow) {
-                        selectedRow = null;
-                        deleteButton.disabled = true;
-                    } else {
-                        row.classList.add("table-active"); // Выделяем строку
-                        selectedRow = row;
-                        deleteButton.disabled = false; // Активируем кнопку
-                    }
-                }
-            });
-
-            // Удаление элемента
-            deleteButton.addEventListener("click", function () {
-                if (!selectedRow) return;
-
-                const itemId = selectedRow.dataset.id;
-
-                if (!confirm("Вы уверены, что хотите удалить этот элемент?")) return;
-
-                fetch(`/itline/${itemId}`, {
-                    method: "DELETE",
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Ошибка при удалении");
-                    }
-                    return response.json();
-                })
-                .then(() => {
-                    selectedRow.remove(); // Удаляем строку из таблицы
-                    selectedRow = null;
-                    deleteButton.disabled = true; // Деактивируем кнопку
-                })
-                .catch(error => {
-                    console.error("Ошибка:", error);
-                    alert("Не удалось удалить элемент.");
-                });
-            });
-        });
-
-
-        // Добавляем слушатель для обновления статуса
-        document.getElementById("dataTable").addEventListener("change", function (event) {
-            if (event.target.classList.contains("toggle-status")) {  // Проверяем, что кликнули на чекбокс
-                const itemId = event.target.dataset.id;  // Берем ID элемента из data-id
-                const isActive = event.target.checked;   // Берем текущее состояние чекбокса
-
-                fetch(`/itline/${itemId}`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ active: isActive })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Ошибка при обновлении");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Статус обновлен:", data);
-                })
-                .catch(error => {
-                    console.error("Ошибка:", error);
-                    event.target.checked = !isActive; // Откат чекбокса при ошибке
-                });
-            }
-        });
-
-        // функция для смены иконки в выпадающем списке
-        function selectIcon(iconSrc) {
-                document.getElementById("iconSelect").src = iconSrc;
-            }
-
-        
-        let modalElement = document.getElementById("addItemModal");
-        modalElement.addEventListener('hide.bs.modal', function () {
-            selectIcon('images/item1.icon');
-            document.getElementById("activeCheckbox").checked = false;
-            document.getElementById("descriptionInput").value = "";
-            document.getElementById("nameInput").value = "";
-        });
-
-        // слушатель для добавления сущности в модальном окне
-        document.getElementById("saveButton").addEventListener("click", function () {
-            let modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-            let name = document.getElementById("nameInput").value.trim();
-            let description = document.getElementById("descriptionInput").value.trim();
-            let iconSelect = document.getElementById("iconSelect").src.split('/').pop();
-            
-            if (name === "" || description === "") {
-                alert("Пожалуйста, заполните все поля!");
-                return;
-            }
-
-            let data = {
-                active: document.getElementById("activeCheckbox").checked,
-                icon: iconSelect,
-                name: name,
-                description: description
-            };
-        
-            fetch('/itline', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(item => {
-                // Добавляем новую строку в таблицу (без перезагрузки страницы)
-                let table = document.getElementById("dataTable");
-                let row = document.createElement("tr");
-                row.dataset.id = item.id;
-                row.classList.add("selectable-row"); // Добавляем класс для выделения
-                row.innerHTML = `
-                    <td>
-                        <input type="checkbox" class="form-check-input toggle-status" 
-                            ${item.active ? 'checked' : ''} data-id="${item.id}">
-                    </td>
-                    <td><img src="/images/${item.icon}" width="32"></td>
-                    <td>${item.name}</td>
-                    <td>${item.description}</td>
-                `;
-
-                table.appendChild(row); // Добавляем в `tbody`
-                document.getElementById("addItemForm").reset();
-                modal.hide();
-            })
-            .catch(error => console.error("Ошибка:", error));
-        });
-    </script>
 </body>
 </html>
