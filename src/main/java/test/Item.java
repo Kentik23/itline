@@ -1,5 +1,6 @@
 package test;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +14,7 @@ public class Item {
     private boolean active;
     private String icon;
     private String name;
+    @Column(length = 5000)
     private String description;
 
     public Long getId() {
