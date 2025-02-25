@@ -16,7 +16,13 @@ public class ItemService {
         return repository.findAll();
     }
 
-    public void save(Item item) {
+    public Item save(Item item) {
+        return repository.save(item);
+    }
+
+    public void updateStatus(Long id, boolean isActive) {
+        Item item = repository.findById(id).orElseThrow(() -> new RuntimeException("Элемент не найден"));
+        item.setActive(isActive);
         repository.save(item);
     }
 }

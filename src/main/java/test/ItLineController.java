@@ -1,7 +1,12 @@
 package test;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +28,16 @@ public class ItLineController {
         return "index";
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @ResponseBody
     public Item addItem(@RequestBody Item item) {
-        itemService.save(item); // Сохраняем в БД
-        return item; // Возвращаем объект для обновления таблицы
+        return itemService.save(item); // Сохраняем в БД, возвращаем объект для обновления таблицы
+    }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody Map<String, Boolean> request) {
+        boolean newStatus = request.get("active");
+        itemService.updateStatus(id, newStatus);
+        return ResponseEntity.ok(Map.of("success", true, "active", newStatus));
     }
 }
