@@ -31,7 +31,7 @@
                                th:data-id="${item.id}">
                     </td>
                     <td><img th:src="@{/images/{icon}(icon=${item.icon})}" width="32" height="32"></td>
-                    <td th:text="${item.name}"></td>
+                    <td class="row-name" th:text="${item.name}"></td>
                     <td th:text="${item.description}"></td>
                 </tr>
             </tbody>

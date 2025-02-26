@@ -26,6 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    deleteButton.addEventListener("click", function () {
+        let name = selectedRow.querySelector("td.row-name").textContent;
+        document.getElementById("delItemModalLabel").textContent = `Вы точно хотите удалить ${name}?`;
+    });
+
     // Удаление элемента
     document.getElementById("modalDeleteButton").addEventListener("click", function () {
         const itemId = selectedRow.querySelector("input[type='checkbox']").dataset.id; // Получаем id элемента
