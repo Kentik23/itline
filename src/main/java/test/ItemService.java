@@ -2,6 +2,7 @@ package test;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +14,7 @@ public class ItemService {
     }
 
     public List<Item> getAllItems() {
-        return repository.findAll();
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "active").and(Sort.by(Sort.Direction.ASC, "id")));
     }
 
     public Item save(Item item) {
