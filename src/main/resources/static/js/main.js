@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Слушатель для смены заголовка окна подтверждения удаления
     deleteButton.addEventListener("click", function () {
         let name = selectedRow.querySelector("td.row-name").textContent;
         document.getElementById("delItemModalLabel").textContent = `Вы точно хотите удалить ${name}?`;
@@ -85,7 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Сброс модального окна его закрытии
     let modalElement = document.getElementById("addItemModal");
-    modalElement.addEventListener('hide.bs.modal', function () {
+    modalElement.addEventListener('hidden.bs.modal', function () {
+        document.getElementById("charCount").textContent = "0/5000";
         selectIcon('images/item1.icon');
         document.getElementById("addItemForm").reset();
     });
@@ -133,5 +135,14 @@ document.addEventListener("DOMContentLoaded", function () {
             modal.hide();
         })
         .catch(error => console.error("Ошибка:", error));
+    });
+
+    const textarea = document.getElementById("descriptionInput");
+    const charCount = document.getElementById("charCount");
+    const maxLength = textarea.maxLength;
+
+    textarea.addEventListener("input", function () {
+        const currentLength = textarea.value.length;
+        charCount.textContent = `${currentLength}/${maxLength}`;
     });
 });

@@ -24,11 +24,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="nameInput" class="form-label">Название</label>
-                            <input type="text" class="form-control" id="nameInput" required>
+                            <input type="text" class="form-control" id="nameInput" required maxlength="255">
                         </div>
                         <div class="mb-3">
                             <label for="descriptionInput" class="form-label">Описание</label>
-                            <textarea class="form-control" id="descriptionInput" required></textarea>
+                            <textarea class="form-control" id="descriptionInput" maxlength="5000" required></textarea>
+                            <small id="charCount" class="form-text text-muted">0/5000</small>
                         </div>
                     </form>
                 </div>
